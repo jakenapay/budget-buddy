@@ -1,0 +1,30 @@
+{
+  "name": "budget-buddy",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "5.3.0",
+    "jspdf": "4.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@tailwindcss/vite": "4.3.3",
+    "eslint": "10.11.0",
+    "globals": "17.12.0",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.0",
+    "vite": "8.3.1",
+    "vitest": "5.0.3"
+  }
+}

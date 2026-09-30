@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Split your take-home pay into categories and save the plan as a one-page PDF. Private: nothing leaves your browser." />
+    <title>Budget Buddy: plan your payslip</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Start the font download immediately, in parallel with the CSS, so
+         text isn't held back waiting for it (see @font-face in styles.css). -->
+    <link rel="preload" href="/node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body class="min-h-dvh">
+    <header class="mx-auto max-w-6xl px-3 sm:px-4 pt-6 pb-5 sm:pt-8">
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex min-w-0 items-center">
+          <div class="min-w-0">
+            <h1 class="text-xl font-extrabold tracking-tight sm:text-2xl">Budget Buddy</h1>
+            <p class="text-sm text-ink-2">Give every part of your pay a job.</p>
+          </div>
+        </div>
+        <div class="flex shrink-0 items-center gap-2">
+          <span class="hidden items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1.5 text-xs font-semibold text-brand-text sm:inline-flex">
+            <svg viewBox="0 0 24 24" class="size-3.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+            Private, no sign-up
+          </span>
+          <button type="button" id="theme-toggle" class="grid size-11 place-items-center rounded-full border border-line bg-surface text-ink-2 transition hover:text-ink" aria-label="Switch to dark mode">
+            <svg id="icon-moon" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" /></svg>
+            <svg id="icon-sun" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-5 px-3 pb-4 sm:px-4 xl:grid-cols-[minmax(0,1fr)_24rem] xl:items-start">
+      <!-- autocomplete="off" so the browser doesn't bring back typed values after a refresh. -->
+      <form id="plan-form" class="grid min-w-0 gap-5" autocomplete="off" novalidate>
+        <section class="card" aria-labelledby="pay-heading">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="step" aria-hidden="true">1</span>
+            <h2 id="pay-heading" class="text-lg font-bold">Your pay</h2>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="grid gap-1.5 sm:col-span-2">
+              <label for="pay" class="label">Take-home pay</label>
+              <div class="affix min-h-16 rounded-2xl">
+                <span class="affix-text text-xl font-semibold" id="pay-symbol" aria-hidden="true">₱</span>
+                <input id="pay" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" class="pr-4 text-3xl font-extrabold tracking-tight" aria-describedby="pay-help pay-error" />
+              </div>
+              <p class="text-sm text-ink-2" id="pay-help">The net amount on your payslip, after tax and deductions.</p>
+              <p class="error" id="pay-error" hidden></p>
+            </div>
+            <div class="grid content-start gap-1.5">
+              <label for="currency" class="label">Currency</label>
+              <select id="currency" class="input"></select>
+            </div>
+            <div class="grid content-start gap-1.5">
+              <label for="payday" class="label">Next payday <span class="font-normal text-ink-2">(optional)</span></label>
+              <input id="payday" type="date" autocomplete="off" class="input" />
+            </div>
+            <div class="grid gap-1.5 sm:col-span-2">
+              <label for="plan-name" class="label">Plan name <span class="font-normal text-ink-2">(optional)</span></label>
+              <input id="plan-name" type="text" maxlength="60" autocomplete="off" placeholder="Budget plan" class="input" />
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="cat-heading">
+          <div class="mb-5 flex items-center gap-3">
+            <span class="step" aria-hidden="true">2</span>
+            <h2 id="cat-heading" class="text-lg font-bold">Split it into categories</h2>
+          </div>
+
+          <div class="mb-5 grid gap-5">
+            <div role="group" aria-labelledby="tpl-label">
+              <p id="tpl-label" class="label">Start from a template</p>
+              <div id="templates" class="mt-2 grid grid-cols-3 gap-2"></div>
+            </div>
+            <fieldset class="min-w-0">
+              <legend class="label">Group by</legend>
+              <div id="scheme" class="mt-2 flex gap-1 rounded-full bg-surface-2 p-1"></div>
+            </fieldset>
+          </div>
+
+          <div class="cat-head" aria-hidden="true">
+            <span></span><span>Name</span><span>Type</span><span class="text-right">Percent</span><span class="text-right">Amount</span><span></span>
+          </div>
+          <ol id="categories" class="grid gap-2"></ol>
+          <p id="cat-empty" class="rounded-2xl border border-dashed border-line-strong p-6 text-center text-ink-2" hidden>No categories yet. Add one or pick a template.</p>
+
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            <button type="button" id="add-cat" class="btn btn-soft">
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+              Add category
+            </button>
+            <p id="add-hint" class="text-sm text-ink-2"></p>
+          </div>
+        </section>
+      </form>
+
+      <aside class="card min-w-0 xl:sticky xl:top-6" aria-labelledby="sum-heading">
+        <div class="mb-5 flex items-center gap-3">
+          <span class="step" aria-hidden="true">3</span>
+          <h2 id="sum-heading" class="text-lg font-bold">Your split</h2>
+        </div>
+
+        <div id="unassigned-row" class="rounded-2xl bg-surface-2 p-4 text-ink data-[status=balanced]:bg-ok-soft data-[status=balanced]:text-ok data-[status=over]:bg-danger-soft data-[status=over]:text-danger data-[status=under]:bg-warn-soft data-[status=under]:text-warn">
+          <div class="flex items-start gap-3">
+            <span class="mt-0.5 shrink-0" aria-hidden="true">
+              <svg data-icon="balanced" viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="9" /><path d="m8 12.5 2.5 2.5L16 9.5" /></svg>
+              <svg data-icon="under" viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" hidden><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5M12 16h.01" /></svg>
+              <svg data-icon="over" viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" /><path d="M12 9v4M12 17h.01" /></svg>
+              <svg data-icon="nopay" viewBox="0 0 24 24" class="size-6 text-ink-2" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18M7 15h3" /></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold">Unassigned</p>
+              <p id="total-unassigned" class="text-2xl font-extrabold tracking-tight wrap-anywhere sm:text-3xl"></p>
+              <p id="unassigned-hint" class="mt-1 text-sm text-ink"></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="split-bar" class="relative mt-5 flex h-5 overflow-hidden rounded-full bg-surface-2" role="img"></div>
+        <ul id="legend" class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-ink-2" aria-hidden="true"></ul>
+
+        <dl class="mt-5 grid gap-2 border-t border-line pt-4 text-sm">
+          <div class="flex justify-between gap-4"><dt class="text-ink-2">Take-home pay</dt><dd id="total-pay" class="font-semibold tabular-nums"></dd></div>
+          <div class="flex justify-between gap-4"><dt class="text-ink-2">Assigned</dt><dd id="total-assigned" class="text-right font-semibold tabular-nums"></dd></div>
+        </dl>
+
+        <h3 class="mt-5 text-sm font-semibold">By group</h3>
+        <ul id="groups" class="mt-2 grid gap-3"></ul>
+
+        <div class="mt-5 flex items-center justify-between gap-4 rounded-2xl bg-brand-soft px-4 py-3">
+          <p class="text-sm font-semibold text-brand-text">Savings rate</p>
+          <p id="savings-rate" class="text-2xl font-extrabold text-brand-text"></p>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="mx-auto max-w-6xl px-4 pt-2 pb-6">
+      <p class="flex items-center justify-center gap-2 text-center text-sm text-ink-2">
+        <svg viewBox="0 0 24 24" class="size-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+        Your numbers stay in your browser. There are no accounts and nothing is stored or sent.
+      </p>
+    </footer>
+
+    <div class="action-bar sticky bottom-0 z-10 px-3 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+      <div class="mx-auto flex max-w-6xl items-center gap-3 rounded-3xl border border-line bg-surface/90 p-2 pl-4 shadow-lg backdrop-blur-md">
+        <p id="pdf-status" class="flex-1 text-xs text-ink-2 sm:text-sm data-[tone=warn]:font-semibold data-[tone=warn]:text-warn data-[tone=ok]:font-semibold data-[tone=ok]:text-ok">Enter your take-home pay to save a PDF.</p>
+        <p id="status-live" class="sr-only" aria-live="polite"></p>
+        <button type="button" id="save-pdf" class="btn btn-primary shrink-0" disabled>
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
+          Save as PDF
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
