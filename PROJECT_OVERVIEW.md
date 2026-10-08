@@ -7,6 +7,8 @@ Budget Buddy is a free, private website with two tools and an FAQ page:
 
 There are no accounts, no server and no database on a server. It is a static site: everything runs in the visitor's browser.
 
+Developer: [Jake Napay](https://jakenapay.vercel.app/), linked in the footer of every page.
+
 ---
 
 ## 1. Features
