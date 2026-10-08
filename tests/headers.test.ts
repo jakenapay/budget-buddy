@@ -15,9 +15,18 @@ describe("vercel.json", () => {
     expect(served).toEqual(SECURITY_HEADERS);
   });
 
-  it("allows no external sources", () => {
+  it("allows no external sources except the opt-in exchange-rate API", () => {
     const csp = SECURITY_HEADERS["Content-Security-Policy"] ?? "";
-    expect(csp).toContain("default-src 'self'");
-    expect(csp).not.toMatch(/https?:|\*|unsafe-inline|unsafe-eval|data:|blob:/);
+    const directives = Object.fromEntries(
+      csp.split(";").map((d) => {
+        const [name = "", ...values] = d.trim().split(/\s+/);
+        return [name, values];
+      }),
+    );
+    expect(directives["default-src"]).toEqual(["'self'"]);
+    expect(directives["connect-src"]).toEqual(["'self'", "https://open.er-api.com"]);
+    const withoutConnect = csp.replace(/connect-src[^;]*/, "");
+    expect(withoutConnect).not.toMatch(/https?:|\*|unsafe-inline|unsafe-eval|data:|blob:/);
+    expect(directives["connect-src"]?.join(" ")).not.toMatch(/\*|data:|blob:/);
   });
 });

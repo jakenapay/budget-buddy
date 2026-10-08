@@ -202,6 +202,11 @@
     outline: 3px solid var(--focus);
     outline-offset: 2px;
   }
+  /* Headings and regions focused by script (to announce a new screen or
+     guide step) aren't controls, so they don't get a focus ring. */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
   input,
   select,
   button {
@@ -373,6 +378,218 @@
   }
   .over-marker {
     @apply absolute inset-y-0 w-[3px] -translate-x-1/2 bg-danger;
+  }
+
+  /* ----------------------------------------------------------------
+     Site navbar (every page)
+     ---------------------------------------------------------------- */
+  .site-header {
+    @apply border-b border-line bg-surface/85 backdrop-blur-md;
+  }
+  .brand {
+    @apply flex min-h-11 items-center gap-2.5 rounded-xl text-lg font-extrabold tracking-tight text-ink;
+  }
+  /* Phones: the page tabs get their own full-width row under the brand. */
+  .site-nav {
+    @apply order-last flex w-full gap-1 rounded-full bg-surface-2 p-1 sm:order-none sm:ml-auto sm:w-auto;
+  }
+  .nav-link {
+    @apply flex min-h-10 flex-1 items-center justify-center gap-2 rounded-full px-4 text-sm font-semibold text-ink-2 transition hover:text-ink sm:flex-none;
+  }
+  /* Three tabs on the narrowest phones (320px): drop the icons so the labels fit. */
+  @media (max-width: 23.99rem) {
+    .nav-link {
+      @apply gap-1.5 px-2;
+    }
+    .nav-link svg {
+      display: none;
+    }
+  }
+  .nav-link[aria-current="page"] {
+    @apply bg-surface text-ink shadow-sm ring-1 ring-line;
+  }
+  .skip-link {
+    @apply sr-only rounded-full bg-brand px-4 py-2 font-semibold text-brand-ink focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50;
+  }
+
+  /* ----------------------------------------------------------------
+     Travel
+     ---------------------------------------------------------------- */
+  .btn-outline {
+    @apply border border-line-strong bg-surface text-ink hover:border-brand hover:text-brand-text;
+  }
+  .btn-sm {
+    @apply min-h-9 px-3.5 text-sm pointer-coarse:min-h-11;
+  }
+  .btn-danger {
+    @apply border border-danger/40 bg-transparent text-danger hover:bg-danger-soft;
+  }
+  .link {
+    @apply font-semibold text-brand-text underline decoration-brand/40 underline-offset-2 hover:decoration-brand;
+  }
+  .back-link {
+    @apply inline-flex min-h-11 items-center gap-1.5 rounded-full text-sm font-semibold text-ink-2 hover:text-ink;
+  }
+
+  .stat {
+    @apply min-w-0 rounded-2xl bg-surface-2 p-3 sm:p-4;
+  }
+  .stat dt {
+    @apply text-xs font-semibold tracking-wide text-ink-2 uppercase;
+  }
+  .stat dd {
+    @apply mt-1 text-lg font-extrabold tracking-tight tabular-nums wrap-anywhere sm:text-xl;
+  }
+
+  .meter {
+    @apply block h-2.5 overflow-hidden rounded-full bg-surface-2;
+  }
+  .meter > span {
+    @apply block h-full rounded-full bg-brand transition-[width] duration-300;
+  }
+  .meter[data-over="true"] > span {
+    @apply bg-danger;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold;
+  }
+  .tag-planned {
+    @apply border border-dashed border-line-strong text-ink-2;
+  }
+  .tag-paid {
+    @apply bg-ok-soft text-ok;
+  }
+  .tag-unplanned {
+    @apply bg-warn-soft text-warn;
+  }
+
+  .expense {
+    @apply flex items-center gap-3 rounded-2xl bg-surface-2 p-2 pl-3;
+  }
+  .expense-main {
+    @apply flex min-h-11 min-w-0 flex-1 items-center gap-3 rounded-xl text-left;
+  }
+
+  .cat-dot {
+    @apply size-3 shrink-0 rounded-full;
+  }
+
+  /* Native <dialog>: a bottom sheet on phones, a centered card on wider screens. */
+  .sheet {
+    @apply m-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto rounded-t-3xl border border-line bg-surface p-0 text-ink shadow-2xl;
+    @apply sm:m-auto sm:max-w-lg sm:rounded-3xl;
+  }
+  .sheet::backdrop {
+    background: rgb(10 12 20 / 0.5);
+  }
+  .sheet-head {
+    @apply sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-line bg-surface px-4 py-3 sm:px-6;
+  }
+  .sheet-body {
+    @apply grid gap-4 p-4 sm:p-6;
+  }
+  .sheet-foot {
+    @apply sticky bottom-0 flex flex-wrap items-center justify-end gap-2 border-t border-line bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-6;
+  }
+
+  /* Category picker: radio buttons as chips. */
+  .pick {
+    @apply flex min-h-11 cursor-pointer items-center gap-2 rounded-2xl border border-line bg-surface px-3 text-sm font-semibold transition hover:border-brand/60;
+  }
+  .pick:has(input:checked) {
+    @apply border-brand bg-brand-soft text-brand-text ring-2 ring-brand/25;
+  }
+  .pick:has(input:focus-visible) {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .fab {
+    @apply fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-20 shadow-lg sm:right-6 sm:bottom-6;
+  }
+
+  .toast {
+    @apply fixed inset-x-3 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-50 mx-auto max-w-md rounded-2xl bg-ink px-4 py-3 text-center text-sm font-semibold text-page shadow-lg sm:bottom-24;
+  }
+
+  /* Guide (tutorial) */
+  .guide-body {
+    @apply gap-3.5;
+  }
+  /* Small dots, large tap area: the button is 24px, the visible dot 8px. */
+  .guide-dot {
+    @apply relative grid size-6 place-items-center rounded-full pointer-coarse:size-7;
+  }
+  .guide-dot::after {
+    content: "";
+    @apply size-2 rounded-full bg-line-strong transition-all;
+  }
+  .guide-dot[aria-current="step"]::after {
+    @apply w-5 bg-brand;
+  }
+  .guide-num {
+    @apply grid size-6 shrink-0 place-items-center rounded-full bg-surface-2 text-xs font-bold text-ink-2;
+  }
+  .guide-btn {
+    @apply inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-ink-2 transition hover:text-ink;
+  }
+
+  /* FAQ */
+  /* Section links: wrapping chips on phones, a vertical list in the wide-screen sidebar. */
+  .faq-jump {
+    @apply flex flex-wrap gap-2 lg:flex-col lg:gap-1;
+  }
+  .faq-jump-link {
+    @apply inline-flex min-h-10 items-center rounded-full border border-line bg-surface px-3.5 text-sm font-semibold text-ink-2 transition hover:border-brand/60 hover:text-ink pointer-coarse:min-h-11;
+  }
+  @media (min-width: 64rem) {
+    .faq-jump-link {
+      @apply justify-start rounded-xl border-transparent bg-transparent px-3 hover:bg-surface-2;
+    }
+  }
+  .faq-item {
+    @apply rounded-2xl border border-line bg-surface;
+    box-shadow: var(--shadow);
+  }
+  .faq-q {
+    @apply flex min-h-14 cursor-pointer list-none items-center gap-3 rounded-2xl px-4 py-3 font-semibold sm:px-5;
+  }
+  .faq-q::-webkit-details-marker {
+    display: none;
+  }
+  .faq-chevron {
+    @apply size-2.5 shrink-0 rotate-45 border-r-2 border-b-2 border-ink-2 transition-transform;
+  }
+  .faq-item[open] .faq-chevron {
+    @apply -rotate-135;
+  }
+  .faq-item[open] .faq-q {
+    @apply text-brand-text;
+  }
+  .faq-a {
+    @apply grid gap-2 px-4 pb-4 text-ink-2 sm:px-5;
+  }
+
+  /* Charts: SVG text and gridlines follow the theme tokens. */
+  .chart text {
+    fill: var(--ink-2);
+    font-size: 11px;
+  }
+  .chart .grid-line {
+    stroke: var(--line);
+  }
+  .bar-planned {
+    fill: var(--surface);
+    stroke: var(--ink-2);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 2;
+  }
+  .bar-spent {
+    fill: var(--brand);
+  }
+  .bar-spent[data-over="true"] {
+    fill: var(--danger);
   }
 }
 

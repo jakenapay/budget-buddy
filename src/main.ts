@@ -7,6 +7,9 @@ import { byId, setText } from "./ui/dom";
 import { mountInputs } from "./ui/inputs";
 import type { Render, Store } from "./ui/store";
 import { mountSummary } from "./ui/summary";
+import { mountTheme } from "./ui/theme";
+import { PAYSLIP_GUIDE } from "./guide-content";
+import { mountGuideButtons, openGuide } from "./ui/guide";
 
 // In-memory only. Nothing is written to storage, so a refresh starts over.
 let plan: Plan = createPlan();
@@ -23,27 +26,13 @@ const store: Store = {
 
 byId<HTMLFormElement>("plan-form").addEventListener("submit", (e) => e.preventDefault());
 
-// Theme: follows the device until the user flips the toggle. The choice
-// lives only on <html> for this visit; nothing is stored, so a refresh goes
-// back to the device setting.
-const themeToggle = byId<HTMLButtonElement>("theme-toggle");
-const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-const isDark = (): boolean => {
-  const forced = document.documentElement.dataset["theme"];
-  return forced ? forced === "dark" : systemDark.matches;
-};
-function renderTheme(): void {
-  const dark = isDark();
-  byId("icon-moon").toggleAttribute("hidden", dark);
-  byId("icon-sun").toggleAttribute("hidden", !dark);
-  themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
-}
-themeToggle.addEventListener("click", () => {
-  document.documentElement.dataset["theme"] = isDark() ? "light" : "dark";
-  renderTheme();
-});
-systemDark.addEventListener("change", renderTheme);
-renderTheme();
+// Theme toggle. Nothing is stored on this page, so a refresh goes back to
+// the device setting.
+mountTheme();
+
+// The guide never opens by itself here: this page stores nothing, so it
+// couldn't remember that it had been seen and would pop up on every visit.
+mountGuideButtons(() => openGuide(PAYSLIP_GUIDE));
 
 const pdfButton = byId<HTMLButtonElement>("save-pdf");
 const pdfStatus = byId<HTMLParagraphElement>("pdf-status");

@@ -7,7 +7,9 @@ export const CSP = [
   "style-src 'self'",
   "img-src 'self'",
   "font-src 'self'",
-  "connect-src 'self'",
+  // The one external host: the Travel page's opt-in "Fetch latest rates"
+  // button. Nothing else may be fetched.
+  "connect-src 'self' https://open.er-api.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'none'",

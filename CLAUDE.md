@@ -94,6 +94,27 @@ their device.
   numbers stay in your browser. There are no accounts and nothing is
   stored or sent."
 
+## Second page: Travel (travel.html, src/travel/)
+A navbar (same markup in index.html, travel.html and faq.html) switches
+between Payslip (/), Travel (/travel) and FAQ (/faq; text in
+src/faq-content.ts, stores nothing). Travel tracks trip spending: trips with
+date ranges, per-day vs whole-trip expenses, planned vs paid ("Mark as
+paid"), multi-currency with the rate saved per expense, SVG charts,
+JSON backup/import and per-trip CSV. Approved exceptions to the rules
+above, Travel page ONLY:
+- Persistence: IndexedDB via src/travel/db.ts (the only file ESLint lets
+  touch storage). Payslip stays memory-only.
+- Network: one opt-in request, the "Fetch latest rates" button in
+  Settings → open.er-api.com. CSP connect-src allows exactly that host.
+  Rates are otherwise manual; nothing is fetched automatically.
+- Offline: vite-plugin-pwa (dev dependency) precaches both pages;
+  service worker is disabled in `npm run dev`.
+- Stack stays vanilla TS + Tailwind, no chart/DB libraries.
+- Planned = sum of estimates (kept after paying); Spent = paid amounts;
+  Still to pay = estimates of unpaid items. Something paid before the
+  trip starts also counts as planned; paid during the trip with no
+  estimate is "Unplanned".
+
 ## Quality bar
 - Fully usable on a phone: large tap targets, number keyboards for
   numeric fields, no horizontal scrolling.
@@ -107,7 +128,7 @@ their device.
 - Before finishing each phase: run typecheck, lint and a production
   build, and open the built site to test.
 
-## Working agreement
+## Working agreement 
 - Work in phases and stop for my review after each one.
 - List anything I must do by hand (hosting setup, domain, headers).
 - If something here conflicts with how a library actually behaves, tell

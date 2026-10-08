@@ -21,7 +21,18 @@ export default tseslint.config(
         "error",
         { name: "localStorage", message: "No persistence (CLAUDE.md)." },
         { name: "sessionStorage", message: "No persistence (CLAUDE.md)." },
-        { name: "indexedDB", message: "No persistence (CLAUDE.md)." },
+        { name: "indexedDB", message: "No persistence (CLAUDE.md). Travel storage goes through src/travel/db.ts." },
+      ],
+    },
+  },
+  {
+    // The single, reviewed exception: the Travel page saves trips in IndexedDB.
+    files: ["src/travel/db.ts"],
+    rules: {
+      "no-restricted-globals": [
+        "error",
+        { name: "localStorage", message: "Travel data lives in IndexedDB only." },
+        { name: "sessionStorage", message: "Travel data lives in IndexedDB only." },
       ],
     },
   },

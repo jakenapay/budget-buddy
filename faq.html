@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="description" content="Answers to common questions about Budget Buddy: privacy, where your data is stored, the Payslip planner and the Travel tracker." />
+    <title>Budget Buddy: FAQ</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/faq.ts"></script>
+  </head>
+  <body class="min-h-dvh">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <!-- Site navbar: same markup on every page (index.html, travel.html); only aria-current moves. -->
+    <header class="site-header">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-3 px-3 py-3 sm:px-4">
+        <a href="/" class="brand">
+          <svg viewBox="0 0 32 32" class="size-8 shrink-0" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1f5fbf" /><rect x="6" y="13" width="7" height="6" rx="1.5" fill="#fff" /><rect x="14" y="13" width="5" height="6" rx="1.5" fill="#9cc2ff" /><rect x="20" y="13" width="6" height="6" rx="1.5" fill="#f3c04f" /></svg>
+          Budget Buddy
+        </a>
+        <nav class="site-nav" aria-label="Pages">
+          <a href="/" class="nav-link">
+            <svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2" /><path d="M3 10h18M7 15h3" /></svg>
+            Payslip
+          </a>
+          <a href="/travel" class="nav-link">
+            <svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></svg>
+            Travel
+          </a>
+          <a href="/faq" class="nav-link" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /><path d="M10 9.5a2 2 0 1 1 2.8 1.8c-.5.2-.8.7-.8 1.2v.5" /><path d="M12 15.5h.01" /></svg>
+            FAQ
+          </a>
+        </nav>
+        <button type="button" class="guide-btn ml-auto sm:ml-0" data-guide="choose" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" class="size-4.5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5v.2" /><path d="M12 17h.01" /></svg>
+          <span class="max-[359px]:sr-only">Guide</span>
+        </button>
+        <button type="button" id="theme-toggle" class="grid size-11 shrink-0 place-items-center rounded-full border border-line bg-surface text-ink-2 transition hover:text-ink" aria-label="Switch to dark mode">
+          <svg id="icon-moon" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z" /></svg>
+          <svg id="icon-sun" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" hidden><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Phones: one column. Wide screens: a sticky sidebar (search, sections,
+         guides) next to the questions, aligned with the navbar. -->
+    <main id="main" tabindex="-1" class="mx-auto max-w-6xl px-3 pt-6 pb-16 sm:px-4 sm:pt-8">
+      <div class="grid grid-cols-1 gap-x-10 lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start">
+        <div class="grid min-w-0 grid-cols-1 gap-5 lg:sticky lg:top-6">
+          <div>
+            <h1 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Frequently asked questions</h1>
+            <p class="mt-1 text-ink-2">Quick answers about privacy, your data, and using Payslip and Travel.</p>
+          </div>
+
+          <div class="grid gap-1.5" role="search">
+            <label for="faq-search" class="label">Search the FAQ</label>
+            <div class="affix min-h-12 rounded-2xl">
+              <span class="affix-text" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z" /><path d="m20 20-4-4" /></svg>
+              </span>
+              <input id="faq-search" type="search" autocomplete="off" enterkeyhint="search" placeholder="e.g. backup, offline, rates" class="!text-left" aria-describedby="faq-status" />
+            </div>
+            <p id="faq-status" class="text-sm text-ink-2 empty:hidden" aria-live="polite"></p>
+          </div>
+
+          <nav id="faq-jump" class="faq-jump" aria-label="FAQ sections"></nav>
+
+        <section class="card hidden lg:block" aria-label="Guides">
+          <h2 class="text-base font-bold">Still stuck?</h2>
+          <p class="mt-1 text-sm text-ink-2">The step-by-step guides walk through every part of each page, with tips.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-guide="payslip" aria-haspopup="dialog">Open Payslip Pal</button>
+            <button type="button" class="btn btn-outline btn-sm" data-guide="travel" aria-haspopup="dialog">Open Travel Teller</button>
+          </div>
+        </section>
+        </div>
+
+        <div class="min-w-0">
+          <div id="faq-list"></div>
+          <p id="faq-empty" class="mt-6 rounded-2xl border border-dashed border-line-strong p-6 text-center text-ink-2" hidden>No questions match that. Try other words, or open one of the guides.</p>
+        <section class="card mt-8 lg:hidden" aria-label="Guides">
+          <h2 class="text-base font-bold">Still stuck?</h2>
+          <p class="mt-1 text-sm text-ink-2">The step-by-step guides walk through every part of each page, with tips.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button type="button" class="btn btn-outline btn-sm" data-guide="payslip" aria-haspopup="dialog">Open Payslip Pal</button>
+            <button type="button" class="btn btn-outline btn-sm" data-guide="travel" aria-haspopup="dialog">Open Travel Teller</button>
+          </div>
+        </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="mx-auto max-w-6xl px-4 pt-2 pb-8">
+      <p class="flex items-center justify-center gap-2 text-center text-sm text-ink-2">
+        <svg viewBox="0 0 24 24" class="size-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+        No accounts, no tracking. Nothing you type here is stored or sent.
+      </p>
+    </footer>
+  </body>
+</html>
